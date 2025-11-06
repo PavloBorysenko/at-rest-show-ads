@@ -1,0 +1,57 @@
+.at-rest-show-ads.death-notices-ads {
+    max-width: 295px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.at-rest-show-ads.death-notices-ads .at-rest-ads-item {
+    width: 100%;
+}
+
+.at-rest-show-ads.death-notices-ads .at-rest-ads-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.at-rest-show-ads.sidebar-ads {
+    max-width: 295px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.at-rest-show-ads.sidebar-ads .at-rest-ads-item {
+    width: 100%;
+}
+
+.at-rest-show-ads.sidebar-ads .at-rest-ads-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.at-rest-show-ads.header-ads {
+    max-height: 185px;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.at-rest-show-ads.header-ads .at-rest-ads-item {
+    height: 100%;
+    flex-shrink: 0;
+}
+
+.at-rest-show-ads.header-ads .at-rest-ads-item img {
+    height: 165px;
+    width: auto;
+    display: block;
+}

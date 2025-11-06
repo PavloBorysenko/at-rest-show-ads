@@ -4,6 +4,13 @@
 
 For proper functionality on death-notices pages, the Advertiser must have the same email as the Funeral Director (FD). The email is used to link the death-notices post author to their Advertiser account.
 
+**Important:** Don't forget to add the new ad banner types in ACF field settings:
+
+-   ACF → Advertisement Settings → Type of Ad → Choices:
+    -   `header : Header`
+    -   `sidebar : Sidebar`
+    -   `death-notices : Death Notices`
+
 ## Shortcode Usage
 
 Use the `[at_rest_show_ads]` shortcode to display advertisements.

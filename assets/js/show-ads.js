@@ -48,6 +48,10 @@ function atRestStartAds(type, duration, perPage, authorId, ad) {
                 ad.innerHTML = adsContent.html;
             }
 
+            if (atRestCheckMaxRepeatCount(ad)) {
+                adsContent.is_stop = true;
+            }
+
             if (!adsContent.is_stop) {
                 setTimeout(
                     () => atRestStartAds(type, duration, perPage, authorId, ad),
@@ -60,6 +64,17 @@ function atRestStartAds(type, duration, perPage, authorId, ad) {
     );
 }
 
+function atRestCheckMaxRepeatCount(ad) {
+    let maxRepeatCount = parseInt(ad.dataset.maxRepeatCount);
+    maxRepeatCount--;
+    ad.setAttribute('data-max-repeat-count', maxRepeatCount);
+    if (maxRepeatCount < 1) {
+        console.log('Ads stopped because of max repeat count');
+        return true;
+    }
+
+    return false;
+}
 function atRestFetchAdsContent(type, perPage, excludedPosts, authorId) {
     const params = new URLSearchParams({
         action: 'at_rest_get_ads_content',

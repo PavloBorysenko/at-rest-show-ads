@@ -15,6 +15,7 @@ class ShowAds {
     public function showAds($atts) {
         $atts = shortcode_atts([
             'type' => 'header',
+            'max_repeat_count' => 50,
             'duration' => 30,
             'per_page' => 1,
         ], $atts, 'at_rest_show_ads');

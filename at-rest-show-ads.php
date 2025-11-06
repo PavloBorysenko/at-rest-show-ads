@@ -19,9 +19,9 @@ require_once AT_REST_SHOW_ADS_DIR . 'src/Data/AdsPosts.php';
 require_once AT_REST_SHOW_ADS_DIR . 'src/Data/AdsPostDataHelper.php';
 
 // Init shortcode
-new Supernova\AtRest\Shortcode\ShowAds();
+new Supernova\AtRestShowAds\Shortcode\ShowAds();
 
 // Init ajax refreshing ads content
-$adsPosts = new Supernova\AtRest\Data\AdsPosts('advertisement');
-$adsHelper = new Supernova\AtRest\Data\AdsPostDataHelper();
-new Supernova\AtRest\Ajax\AdsContent($adsPosts, $adsHelper);
+$adsPosts = new Supernova\AtRestShowAds\Data\AdsPosts('advertisement');
+$adsHelper = new Supernova\AtRestShowAds\Data\AdsPostDataHelper();
+new Supernova\AtRestShowAds\Ajax\AdsContent($adsPosts, $adsHelper);

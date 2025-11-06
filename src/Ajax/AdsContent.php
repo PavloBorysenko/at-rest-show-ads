@@ -1,9 +1,9 @@
 <?php
 
-namespace Supernova\AtRest\Ajax;
+namespace Supernova\AtRestShowAds\Ajax;
 
-use Supernova\AtRest\Data\AdsPosts;
-use Supernova\AtRest\Data\AdsPostDataHelper;
+use Supernova\AtRestShowAds\Data\AdsPosts;
+use Supernova\AtRestShowAds\Data\AdsPostDataHelper;
 class AdsContent {
 
     private AdsPosts $adsPosts;

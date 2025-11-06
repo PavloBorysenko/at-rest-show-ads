@@ -1,6 +1,6 @@
 <?php
 
-namespace Supernova\AtRest\Data;
+namespace Supernova\AtRestShowAds\Data;
 
 class AdsPostDataHelper {
     public function getImageSrc($id) : string {

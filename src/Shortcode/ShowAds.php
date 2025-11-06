@@ -1,6 +1,6 @@
 <?php
 
-namespace Supernova\AtRest\Shortcode;
+namespace Supernova\AtRestShowAds\Shortcode;
 
 
 class ShowAds {

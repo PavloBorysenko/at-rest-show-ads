@@ -2,12 +2,15 @@
 
 namespace Supernova\AtRest\Ajax;
 
-use Supernova\AtRest\Data\AdsPost;
+use Supernova\AtRest\Data\AdsPosts;
+use Supernova\AtRest\Data\AdsPostDataHelper;
 class AdsContent {
 
-    private AdsPost $adsPost;
-    public function __construct( AdsPost $adsPost) {
-        $this->adsPost = $adsPost;
+    private AdsPosts $adsPosts;
+    private AdsPostDataHelper $adsPostDataHelper;
+    public function __construct( AdsPosts $adsPosts, AdsPostDataHelper $adsPostDataHelper) {
+        $this->adsPostDataHelper = $adsPostDataHelper;
+        $this->adsPosts = $adsPosts;
         add_action('init', [$this, 'init']);
     }
 
@@ -30,20 +33,20 @@ class AdsContent {
         wp_send_json($data);
     }
     private function getAdsContentData($author_id, $type, $perPage, $excludedPosts) {
-        $ids = $this->adsPost->getAdsPostIds($author_id, $type, $perPage, $excludedPosts);
+        $ids = $this->adsPosts->getAdsPostIds($author_id, $type, $perPage, $excludedPosts);
 
         $data = [];
         $data['is_reset'] = false;
         $data['is_stop'] = false;
 
         if (count($ids) < $perPage) {
-            if(empty($excludedPosts)) {
+            if(empty($excludedPosts) && count($ids) == 0) {
                 $data = ['is_stop' => true];
                 return $data;
             } else {
                 $excludedPosts = $ids;
                 $perPage = $perPage - count($ids);
-                $ids_more = $this->adsPost->getAdsPostIds($author_id, $type, $perPage, $excludedPosts);
+                $ids_more = $this->adsPosts->getAdsPostIds($author_id, $type, $perPage, $excludedPosts);
                 $ids = array_merge($ids, $ids_more);
                 $data['is_reset'] = true;
             }
@@ -69,34 +72,12 @@ class AdsContent {
         return $html;
     }
     private function getItemHtml($id, $type) {
-        switch ($type) {
-            case 'death-notices':
-                return $this->getDeathNoticesItemHtml($id);
-            case 'sidebar':
-                return $this->getSidebarItemHtml($id);
-            case 'header':
-                return $this->getHeaderItemHtml($id);
-            default:
-                return '';
-        }
 
-    }
-    private function getDeathNoticesItemHtml($id) {
-        $title = get_the_title($id);
+        $img_url = $this->adsPostDataHelper->getImageSrc($id);
+        $link = $this->adsPostDataHelper->getTargetLink($id);
+        $this->adsPostDataHelper->updateViewsPlusOne($id);
         ob_start();
-        include AT_REST_SHOW_ADS_DIR . 'views/templates/death-notices-ads-item.php';
-        return ob_get_clean();
-    }
-    private function getSidebarItemHtml($id) {
-        $title = get_the_title($id);
-        ob_start();
-        include AT_REST_SHOW_ADS_DIR . 'views/templates/sidebar-ads-item.php';
-        return ob_get_clean();
-    }
-    private function getHeaderItemHtml($id) {
-        $title = get_the_title($id);
-        ob_start();
-        include AT_REST_SHOW_ADS_DIR . 'views/templates/header-ads-item.php';
+        include AT_REST_SHOW_ADS_DIR . 'views/templates/ads-item.php';
         return ob_get_clean();
     }
 }    

@@ -2,7 +2,7 @@
 
 namespace Supernova\AtRest\Data;
 
-class AdsPost {
+class AdsPosts {
 
     private string $postType;
 
@@ -17,6 +17,10 @@ class AdsPost {
         $args = $this->addPerPage($args, $perPage);
         $args = $this->addExcludedPosts($args, $excludedPosts);
         $posts = get_posts($args);
+        error_log('Posts: ' . count($posts));
+        error_log('Args: ' . print_r($args, true));
+        error_log('***************************************');
+
         return $posts;
     }
     private function getBaseQueryArgs() : array {
@@ -39,10 +43,45 @@ class AdsPost {
         ];
     }
     private function addAuthorId($args, $author_id) : array {
-        if ($author_id > 0) {
-            $args['author'] = $author_id;
+       
+        // This isn't death notices page.
+        if ($author_id < 0) {
+            return $args;
         }
+
+        $advertiser_id = $this->getAdvertiserId($author_id);
+
+        $args['meta_query'][] = [
+            'key' => 'advertiser',
+            'value' => $advertiser_id,
+            'compare' => '='
+        ];
+
         return $args;
+    }
+    private function getAdvertiserId($author_id) : int {
+
+        $email = get_the_author_meta('user_email', $author_id);
+        
+        if (empty($email)) {
+            // There is no advertiser for this user.
+            return -1;
+        }
+
+        $args = [
+            'post_type' => 'advertiser',
+            'fields' => 'ids',
+            'meta_query' => [
+                [
+                    'key' => 'email',
+                    'value' => $email,
+                    'compare' => '='
+                ]
+            ]
+        ];
+        $advertiser = get_posts($args);
+
+        return (int) $advertiser[0] ?? -1;
     }
 
     private function addExcludedPosts($args, $excludedPosts) : array {

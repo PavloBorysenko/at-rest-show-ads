@@ -15,7 +15,13 @@ define('AT_REST_SHOW_ADS_URL', plugin_dir_url( __FILE__));
 
 require_once AT_REST_SHOW_ADS_DIR . 'src/Shortcode/ShowAds.php';
 require_once AT_REST_SHOW_ADS_DIR . 'src/Ajax/AdsContent.php';
-require_once AT_REST_SHOW_ADS_DIR . 'src/Data/AdsPost.php';
+require_once AT_REST_SHOW_ADS_DIR . 'src/Data/AdsPosts.php';
+require_once AT_REST_SHOW_ADS_DIR . 'src/Data/AdsPostDataHelper.php';
+
+// Init shortcode
 new Supernova\AtRest\Shortcode\ShowAds();
-$adsPost = new Supernova\AtRest\Data\AdsPost('advertisement');
-new Supernova\AtRest\Ajax\AdsContent($adsPost);
+
+// Init ajax refreshing ads content
+$adsPosts = new Supernova\AtRest\Data\AdsPosts('advertisement');
+$adsHelper = new Supernova\AtRest\Data\AdsPostDataHelper();
+new Supernova\AtRest\Ajax\AdsContent($adsPosts, $adsHelper);

@@ -17,19 +17,31 @@ function atRestStartAds(type, duration, perPage, authorId, ad) {
             if (adsContent.ids && adsContent.ids.length > 0) {
                 const currentIds = JSON.stringify(adsContent.ids.sort());
                 const lastIds = ad.dataset.lastIds || '';
+                const repeatCount = parseInt(ad.dataset.repeatCount || '0');
 
                 if (lastIds === currentIds) {
-                    console.log('Same ads repeating, stopping rotation');
-                    return;
+                    const newRepeatCount = repeatCount + 1;
+                    ad.dataset.repeatCount = newRepeatCount;
+
+                    if (newRepeatCount >= 3) {
+                        console.log(
+                            'Same ads repeated 3 times, stopping rotation'
+                        );
+                        return;
+                    }
+                    console.log(`Same ads repeated ${newRepeatCount} times`);
+                } else {
+                    ad.dataset.repeatCount = '0';
+                    ad.dataset.lastIds = currentIds;
                 }
 
-                ad.dataset.lastIds = currentIds;
                 atRestSetExcludedPosts(type, adsContent.ids);
             }
 
             if (adsContent.is_reset) {
                 atRestResetExcludedPosts(type);
-                delete ad.dataset.lastIds;
+                //delete ad.dataset.lastIds;
+                //delete ad.dataset.repeatCount;
             }
 
             if (adsContent.html) {
@@ -41,6 +53,8 @@ function atRestStartAds(type, duration, perPage, authorId, ad) {
                     () => atRestStartAds(type, duration, perPage, authorId, ad),
                     duration * 1000
                 );
+            } else {
+                console.log('Ads stopped because of no more ads');
             }
         }
     );

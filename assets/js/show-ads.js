@@ -92,7 +92,6 @@ function atRestFetchAdsContent(type, perPage, excludedPosts, authorId) {
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log('data', data);
             if (!data) {
                 return {
                     is_reset: false,
